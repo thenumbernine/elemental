@@ -1,4 +1,6 @@
 body {
+	color:white;
+	background-color:black;
 }
 
 #splash-page {
@@ -23,5 +25,3 @@ body {
 #game-canvas {
 	position:absolute;
 };
-
-
