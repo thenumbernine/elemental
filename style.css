@@ -1,0 +1,27 @@
+body {
+}
+
+#splash-page {
+	text-align:center;
+	background-image:url('res/drawable/background.png');
+	background-size:100% 100%;
+}
+
+#scores-page {
+	text-align:center;
+	background-image:url('res/drawable/background.png');
+	background-size:100% 100%;
+}
+
+#game-page {
+	text-align:center;
+	background-size:100% 100%;
+	background:black;
+	overflow:hidden;
+}
+
+#game-canvas {
+	position:absolute;
+};
+
+
