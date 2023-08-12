@@ -1,13 +1,5 @@
-import {DOM, makeClass, isa, getIDs} from '/js/util.js';
+import {DOM, getIDs, preload} from '/js/util.js';
 const ids = getIDs();
-
-// query all pages and hide them all
-document.querySelectorAll('[data-role]').forEach(p => {
-	if (p.dataset.role == 'page') {
-		p.style.display = 'none';
-	}
-});
-
 
 let lastPage;
 function changePage(page) {
@@ -623,6 +615,15 @@ class Pointer extends TileHolder {
 	getWorldScale() { return this.hand.getScale() * 1.2; }
 }
 
+//init at global scope so i can preload all their images
+const allColors = [
+	new Color('red'),
+	new Color('green'),
+	new Color('blue'),
+	new Color('yellow'),
+	new Color('purple'),
+];
+
 // game singleton ... I should make it a class since it is cloning the Game.java class ...
 
 let game = new (function(){
@@ -677,12 +678,7 @@ let game = new (function(){
 		
 		this.gameTime = Date.now();
 
-		this.colors = [];
-		this.colors.push(new Color('red'));
-		this.colors.push(new Color('green'));
-		this.colors.push(new Color('blue'));
-		this.colors.push(new Color('yellow'));
-		this.colors.push(new Color('purple'));
+		this.colors = allColors;
 
 		let handSize = 8;
 		let boardSize = 4;
@@ -1440,7 +1436,6 @@ function ready() {
 	window.addEventListener('mouseup', onmouseup);
 	window.addEventListener('mousedown', onmousedown);
 	window.addEventListener('mousemove', onmousemove);
-	document.body.style.userSelect = 'none';
 
 	ids['splash-level-up'].addEventListener('click', e => {
 		splash.changelevel(1);
@@ -1457,9 +1452,8 @@ function ready() {
 	ids['splash-help'].addEventListener('click', e => {
 		splash.help();
 	});
-	ids['help-back'].addEventListener('click', e => {
-		help.back();
-	});
+	ids['help-back'].addEventListener('click', e => { help.back(); });
+	ids['help-back2'].addEventListener('click', e => { help.back(); });
 	ids['scores-back'].addEventListener('click', e => {
 		scores.back();
 	});
@@ -1469,4 +1463,13 @@ function ready() {
 	}, 100);	//new chrome no longer renders immediately on load ...
 }
 
-ready();
+const imgs = [
+	'res/drawable/tile_empty.png',
+	'res/drawable/cursor.png'
+];
+allColors.forEach(c => {
+	imgs.push(c.getTileImgURL());
+	imgs.push(c.getCrossImgURL());
+	imgs.push(c.getCircleImgURL());
+});
+preload(imgs, ready);

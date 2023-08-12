@@ -1,6 +1,7 @@
 body {
 	color:white;
 	background-color:black;
+	user-select:none;
 }
 
 #splash-page {
@@ -24,4 +25,22 @@ body {
 
 #game-canvas {
 	position:absolute;
-};
+}
+
+[data-role="page"] {
+	display:none;
+}
+
+#splash-level {
+	font-size : 48pt;
+}
+
+button, label {
+	background-color : white;
+	color : black;
+	padding : 10px;
+	border-radius : 10px;
+	font-size : 14pt;
+	font-weight : 600;
+	cursor : pointer;
+}
