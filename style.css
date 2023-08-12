@@ -2,6 +2,9 @@ html {
 	margin:0px;
 	padding:0px;
 	height:100%;
+
+	/* https://stackoverflow.com/a/74063908 */
+	touch-action: none;
 }
 
 body {

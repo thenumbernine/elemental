@@ -1418,19 +1418,18 @@ function ready() {
 
 	//window.addEventListener('dragstart', function(e) { e.preventDefault(); });
 	window.addEventListener('touchstart', e => {
-		onmousedown(e.originalEvent.changedTouches[0]);
+		onmousedown(e.changedTouches[0]);
 	});
 	window.addEventListener('touchmove', e => {
-		e.preventDefault();
-		onmousemove(e.originalEvent.changedTouches[0]);
+		onmousemove(e.changedTouches[0]);
 	});
 	window.addEventListener('touchend', e => {
-		e.preventDefault();
-		onmouseup(e.originalEvent.changedTouches[0]);
+		onmouseup(e.changedTouches[0]);
+		// this prevents all touch events
+		//e.preventDefault();
 	});
 	window.addEventListener('touchcancel', e => {
-		e.preventDefault();
-		onmouseup(e.originalEvent.changedTouches[0]);
+		onmouseup(e.changedTouches[0]);
 	});
 	window.addEventListener('keydown', onkeydown);
 	window.addEventListener('mouseup', onmouseup);
