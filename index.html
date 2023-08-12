@@ -10,68 +10,70 @@
 		<script type="module" src="main.js" defer></script>
 	</head>
 	<body>
-		<div id='splash-page' data-role='page'>
-			<div data-role='header'><h1>Elemental</h1></div>
-			<div data-role='content'>
-				Select Level<br>
-				<button id='splash-level-up'><img src='res/drawable/button_up.png'/></button>
+		<div id='splash-page' class='page'>
+			<div class='header'>Elemental</div>
+			<span style='font-size:24pt'>Select Level</span>
+			<br>
+			<br>
+			<div id='splash-level-div'>
+				<button id='splash-level-up'><img src='res/drawable/button_up.png' height='36pt'/></button>
 				<span id='splash-level'>1</span>
-				<button id='splash-level-down'><img src='res/drawable/button_down.png'/></button>
-				<br>
-				<button id='splash-start'>Start</button>
-				<button id='splash-scores'>Scores</button>
-				<button id='splash-help'>Help</button>
-				<br>
-				Concept by Sean Moore<br>
-				Programming by Chris Moore<br>
+				<button id='splash-level-down'><img src='res/drawable/button_down.png' height='36pt'/></button>
 			</div>
+			<br>
+			<button id='splash-start'>Start</button>
+			<button id='splash-scores'>Scores</button>
+			<button id='splash-help'>Help</button>
+			<br>
+
+			<br>
+			Concept by Sean Moore<br>
+			Programming by Chris Moore<br>
 		</div>
-		<div id='help' data-role='page'>
+		<div id='help' class='page'>
 			<button id='help-back'>Back</button>
-			<div data-role='header'><h1>Help</h1></div>
-			<div data-role='content'>
-				<img src='assets/help.png'></img>
-				<h2>Rules</h2>
-<p>
-A puzzle game for those who enjoy a logical challenge.  The object is to see how many tiles you can place, thus getting as high of a score as you can. Tiles can only be played if the pattern on the tile matches the pattern on the board where the tile is placed.
-</p>
-				<ul>
-					<li>The object is to gain as many points as you can.</li>
-					<li>Place a piece from your hand to the board to gain points.</li>
-					<li>Every ten pieces played produces a raise in level.</li>
-					<li>Certain pieces have constraints on where they can be played.  These constraints show what the neighboring tiles must be for this piece to be placed on a specific tile.</li>
-					<li>The higher level you are the more points you will gain for placing a piece, yet the more constraints a piece may have.</li>
-					<li>Certain pieces will change more than the color of the tile where they are placed.
-						<ul>
-							<li>The cross-shaped piece changes the colors of tiles above, below, to the left, and right of where they are placed.</li>
-							<li>The circle-shaped piece changes the colors of all connected tiles with colors matching the tile where it was placed.</li>
-						</ul>
-					</li>
-				</ul>
-				<h2>Controls</h2>
-				<ul>
-					<li>Drag a tile from your hand to the board to place it on the board.</li>
-					<li>Drag the board to rotate the board.</li>
-				</ul>
-				<h2>Bonuses</h2>
-				<ul>
-					<li>Place piece on its same color and you will get a bonus.</li>
-					<li>Place a piece with a constraint that uses the tile that the last piece was placed on and you will get a bonus.</li>
-					<li>Fill a column or a row with all of the same color and you will get a bonus.</li>
-					<li>Fill the entire board all of the same color and you will get a bigger bonus.  The board will reset itself with random colored tiles as well.</li>
-				</ul>
-				<button id='help-back2'>Back</button>
-			</div>
+			<div class='header'>Help</div>
+			<img src='assets/help.png'></img>
+			<h2>Rules</h2>
+			<p>
+			A puzzle game for those who enjoy a logical challenge.  The object is to see how many tiles you can place, thus getting as high of a score as you can. Tiles can only be played if the pattern on the tile matches the pattern on the board where the tile is placed.
+			</p>
+			<ul>
+				<li>The object is to gain as many points as you can.</li>
+				<li>Place a piece from your hand to the board to gain points.</li>
+				<li>Every ten pieces played produces a raise in level.</li>
+				<li>Certain pieces have constraints on where they can be played.  These constraints show what the neighboring tiles must be for this piece to be placed on a specific tile.</li>
+				<li>The higher level you are the more points you will gain for placing a piece, yet the more constraints a piece may have.</li>
+				<li>Certain pieces will change more than the color of the tile where they are placed.
+					<ul>
+						<li>The cross-shaped piece changes the colors of tiles above, below, to the left, and right of where they are placed.</li>
+						<li>The circle-shaped piece changes the colors of all connected tiles with colors matching the tile where it was placed.</li>
+					</ul>
+				</li>
+			</ul>
+			<h2>Controls</h2>
+			<ul>
+				<li>Drag a tile from your hand to the board to place it on the board.</li>
+				<li>Drag the board to rotate the board.</li>
+			</ul>
+			<h2>Bonuses</h2>
+			<ul>
+				<li>Place piece on its same color and you will get a bonus.</li>
+				<li>Place a piece with a constraint that uses the tile that the last piece was placed on and you will get a bonus.</li>
+				<li>Fill a column or a row with all of the same color and you will get a bonus.</li>
+				<li>Fill the entire board all of the same color and you will get a bigger bonus.  The board will reset itself with random colored tiles as well.</li>
+			</ul>
+			<button id='help-back2'>Back</button>
 		</div>
-		<div id='scores-page' data-role='page'>
-			<div data-role='header'><h1>High Scores</h1></div>
+		<div id='scores-page' class='page'>
+			<div class='header'>High Scores</div>
 			<div data-role='content'>
 				<div id='scores-grid' class='ui-grid-b'>
 				</div>
 				<button id='scores-back'>Back</button>
 			</div>
 		</div>
-		<div id='game-page' data-role='page'>
+		<div id='game-page' class='page'>
 			<div data-role='content'>
 				<div id='game-level-div' style='position:absolute; z-index:1; bottom:0px'>
 					Level: <span id='game-level'></span>

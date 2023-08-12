@@ -66,8 +66,8 @@ class Place extends TileHolder {
 		this.x = newX;
 		this.y = newY;
 	}
-	
-	containsPoint(ptx, pty) {	
+
+	containsPoint(ptx, pty) {
 		//global to local
 		ptx -= this.getWorldX();
 		ptx /= this.getWorldScale();
@@ -76,7 +76,7 @@ class Place extends TileHolder {
 		//local space compare
 		return ptx >= -this.SPAN && pty >= -this.SPAN && ptx <= this.SPAN && pty <= this.SPAN;
 	}
-	
+
 	draw(canvas) {
 		this.rect.left = this.getWorldX() - this.SPAN * this.getWorldScale();
 		this.rect.right = this.getWorldX() + this.SPAN * this.getWorldScale();
@@ -88,14 +88,14 @@ class Place extends TileHolder {
 		} else {
 			canvas.drawImage(this.img, this.rect.left, this.rect.top, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top);
 		}
-		
+
 		//draw any tile on us
 		super.draw(canvas);
 
 		let deltaFlashTime = this.grid.game.gameTime - this.flashStartTime;
 		if (deltaFlashTime >= 0 && deltaFlashTime <= this.FLASH_DURATION) {
 			if ((parseInt(deltaFlashTime / this.FLASH_PERIOD) & 1) == 1) {
-				canvas.fillStyle = '#ffffff'; 
+				canvas.fillStyle = '#ffffff';
 				canvas.fillRect(this.rect.left, this.rect.top, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top);
 			}
 			this.grid.game.redraw();	//keep redrawing while we're flashing
@@ -113,15 +113,15 @@ class Tile {
 		this.color = color;
 		this.type = type;
 	}
-	
+
 	setHolder(holder) {
 		this.holder = holder;
 	}
-	
+
 	getColor() {
 		return this.color;
 	}
-	
+
 	setColor(color) {
 		this.color = color;
 	}
@@ -129,18 +129,18 @@ class Tile {
 	canPlay(board, x, y) {
 		return true;
 	}
-	
+
 	getPoints(level) {
 		return level * this.BASE_POINTS;	//base
 	}
-	
-	/* whether playing this tile at thisX,thisY 
+
+	/* whether playing this tile at thisX,thisY
 		had something to do with whatever was at otherX, otherY
 	*/
 	playDependsOn(thisX, thisY, otherX, otherY) {
 		return false;
 	}
-	
+
 	draw(canvas) {
 		this.rect.left = this.holder.getWorldX() - this.SPAN * this.holder.getWorldScale();
 		this.rect.right = this.holder.getWorldX() + this.SPAN * this.holder.getWorldScale();
@@ -154,21 +154,21 @@ Tile.prototype.TYPE_AREA = 1;
 Tile.prototype.TYPE_FILL = 2;
 Tile.prototype.BASE_POINTS = 10;
 Tile.prototype.SPAN = .45;	//.4f;
-	
+
 
 class Tile3x3 extends Tile {
 	constructor(color, type, neighbors) {
 		super(color, type);
-		
+
 		this.subrect = {};
 		this.neighbors = [];
 		this.neighbors.length = 9;
-		
+
 		for (let i = 0; i < 9; i++) {
 			this.neighbors[i] = neighbors[i];
 		}
 	}
-	
+
 	canPlay(board, x, y) {
 		let e = 0;
 		for (let j = 0; j < 3; j++) {
@@ -177,7 +177,7 @@ class Tile3x3 extends Tile {
 				if (n !== undefined) {
 					let u = ((i-1) + x + board.width) % board.width;
 					let v = ((j-1) + y + board.height) % board.height;
-					
+
 					let place = board.getPlace(u,v);
 					let tile = place.getTile();
 					if (tile.getColor() != n) return false;
@@ -186,7 +186,7 @@ class Tile3x3 extends Tile {
 		}
 		return true;
 	}
-	
+
 	/*
 	point system ...
 	*/
@@ -201,14 +201,14 @@ class Tile3x3 extends Tile {
 					colors[c]++;
 				} else {
 					colors[c] = 1;
-					numUniqueColors++; 
+					numUniqueColors++;
 				}
 			}
 		});
-		let pts = 1 + nbhs * numUniqueColors * numUniqueColors; 
+		let pts = 1 + nbhs * numUniqueColors * numUniqueColors;
 		return level * pts * this.BASE_POINTS;
 	}
-	
+
 	playDependsOn(thisX, thisY, otherX, otherY) {
 		let dx = otherX - thisX;	//-1 to 1
 		let dy = otherY - thisY;
@@ -220,7 +220,7 @@ class Tile3x3 extends Tile {
 
 	draw(canvas) {
 		super.draw(canvas);
-		
+
 		let sx = this.rect.right - this.rect.left;
 		let sy = this.rect.bottom - this.rect.top;
 		let e = 0;
@@ -262,21 +262,11 @@ class Grid {
 		}
 		this.refreshAllPlaces();
 	}
-	
+
 	getPlace(x, y) {
 		return this.places[x][y];
 	}
-	
-	getAllPlaces() {
-		return this.allPlaces;
-	}
-	
-	draw(canvas) {
-		this.allPlaces.forEach(p => {
-			p.draw(canvas);
-		});
-	}
-	
+
 	getAllPlaces() {
 		return this.allPlaces;
 	}
@@ -286,7 +276,17 @@ class Grid {
 			p.draw(canvas);
 		});
 	}
-	
+
+	getAllPlaces() {
+		return this.allPlaces;
+	}
+
+	draw(canvas) {
+		this.allPlaces.forEach(p => {
+			p.draw(canvas);
+		});
+	}
+
 	//so the whole idea of separating containsPoint from getPlaceAtPoint
 	//was to allow for some basic grid area test optimizations...
 	//...meh
@@ -298,19 +298,19 @@ class Grid {
 			}
 		}
 	}
-	
-	getWorldX(px) { 
+
+	getWorldX(px) {
 		if (px === undefined) return super.getWorldX();
 		return px * this.scale + this.x;
 	}
-	getWorldY(py) { 
+	getWorldY(py) {
 		if (py === undefined) return super.getWorldY();
 		return py * this.scale + this.y;
 	}
 	getScale() { return this.scale; }
 	getWidth() { return this.width; }
 	getHeight() { return this.height; }
-	
+
 	refreshAllPlaces() {
 		let e = 0;
 		this.allPlaces = [];
@@ -321,7 +321,7 @@ class Grid {
 			}
 		}
 	}
-	
+
 	flip() {
 		{
 			let tmp = width;
@@ -415,11 +415,11 @@ class Cursor extends TileHolder {
 		this.y = 0;
 		this.onBoard = false;
 	}
-	
-	hide() { 
+
+	hide() {
 		this.hidden = true;
 	}
-	
+
 	down() {
 		this.hidden = false;
 		this.y++;
@@ -435,7 +435,7 @@ class Cursor extends TileHolder {
 			}
 		}
 	}
-	
+
 	up() {
 		this.hidden = false;
 		this.y--;
@@ -449,13 +449,13 @@ class Cursor extends TileHolder {
 			}
 		}
 	}
-	
+
 	left() {
 		this.hidden = false;
 		this.x--;
 		if (this.x < 0) this.x = 0;
 	}
-	
+
 	right() {
 		this.hidden = false;
 		this.x++;
@@ -469,7 +469,7 @@ class Cursor extends TileHolder {
 			}
 		}
 	}
-	
+
 	//copied from Pointer
 	returnTile() {
 		let oldTile = this.getTile();
@@ -479,7 +479,7 @@ class Cursor extends TileHolder {
 			this.grabbedFromPlace = undefined;
 		}
 	}
-	
+
 	click() {
 		this.hidden = false;
 		//TODO - run this on the render thread
@@ -498,29 +498,29 @@ class Cursor extends TileHolder {
 
 			let oldTile = this.getTile();
 			this.setTile(undefined);
-				
+
 			let newTile = place.getTile();
 			place.setTile(undefined);
 
 			if (oldTile === undefined) {
 				this.grabbedFromPlace = place;
 			}
-			
+
 			this.setTile(newTile);
 			place.setTile(oldTile);
 
 			this.game.refreshValidPlays();
 		}
 	}
-	
+
 	currentGrid() {
-		return this.onBoard ? this.board : this.hand; 
+		return this.onBoard ? this.board : this.hand;
 	}
 
 	getWorldX() {
 		return this.currentGrid().getWorldX(this.x);
 	}
-	
+
 	getWorldY() {
 		return this.currentGrid().getWorldY(this.y);
 	}
@@ -528,7 +528,7 @@ class Cursor extends TileHolder {
 	getWorldScale() {
 		return this.currentGrid().getScale() * 1.2;
 	}
-	
+
 	draw(canvas) {
 		if (this.hidden) return;
 		super.draw(canvas);
@@ -552,16 +552,16 @@ class Pointer extends TileHolder {
 		this.game = game;
 		this.hand = hand;
 	}
-	
+
 	isVisible() { return this.visible; }
 	setVisible(v) { this.visible = v; }
 	hide() { this.setVisible(false); }
 	show() { this.setVisible(true); }
-	
+
 	setGrabbedFromPlace(place) {
 		this.grabbedFromPlace = place;
 	}
-	
+
 	//returns the tile to the place it was grabbed from
 	returnTile() {
 		//assert(grabbedFromPlace.getTile() === undefined);
@@ -572,23 +572,23 @@ class Pointer extends TileHolder {
 			this.grabbedFromPlace = undefined;
 		}
 	}
-	
+
 	//place a tile in the hand
 	//i.e. just swap the contents of where we place this with where we came from
 	playInHand(place) {
 		let oldTile = this.getTile();
 		this.setTile(undefined);
-		
+
 		let newTile = place.getTile();
 		place.setTile(undefined);
-		
+
 		//set newTile before setting oldTile because newTile may be undefined (if it's the same place we're setting where we got our tile from)
 		this.grabbedFromPlace.setTile(newTile);
 		place.setTile(oldTile);
-		
+
 		this.game.refreshValidPlays();
 	}
-	
+
 	playInBoard(board, i, j) {
 		let tile = this.getTile();
 		if (tile.canPlay(board, i, j)) {
@@ -599,16 +599,16 @@ class Pointer extends TileHolder {
 			this.returnTile();
 		}
 	}
-	
+
 	setPos(x, y) {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	//used for clicking
 	getPointerX() { return this.x; }
 	getPointerY() { return this.y; }
-	
+
 	//used for rendering
 	getWorldX() { return this.x; }
 	getWorldY() { return this.y; }
@@ -629,7 +629,7 @@ const allColors = [
 let game = new (function(){
 	let thiz = this;
 	this.started = false;
-	
+
 	this.PLAYS_PER_LEVEL = 10;
 	this.START_LEVEL = 1;
 
@@ -647,35 +647,35 @@ let game = new (function(){
 	};
 
 	this.start = function(level) {
-		
+
 		//used for js
 		this.started = true;
-		
+
 		//member constructor
 		this.levelPlaysLeft = this.PLAYS_PER_LEVEL;
 
 		this.level = 1;
 		this.points = 0;
-		
+
 		this.lastPlayX = -99;
 		this.lastPlayY = -99;
-		
-		this.numPlays = 0;	
+
+		this.numPlays = 0;
 		this.gameTime = 0;
 
 		this.draggingBoard = false;
 		this.backgroundFadeStartTime = -this.BACKGROUND_FADE_DURATION-1;
-		
+
 		this.rect = {};
-		
+
 		this.redrawCounter = 0;
-		
+
 		this.lastCanvasWidth = -1;
 		this.lastCanvasHeight = -1;
-	
+
 		//ctor:
 		this.level = level;
-		
+
 		this.gameTime = Date.now();
 
 		this.colors = allColors;
@@ -688,8 +688,8 @@ let game = new (function(){
 		this.cursor = new Cursor(this, this.board, this.hand);
 		this.handPointer = new Pointer(this, this.hand);
 
-		this.levelPlaysLeft = this.PLAYS_PER_LEVEL; 
-	
+		this.levelPlaysLeft = this.PLAYS_PER_LEVEL;
+
 		this.randomizeBoard();
 
 		this.hand.getAllPlaces().forEach(p => {
@@ -697,7 +697,7 @@ let game = new (function(){
 		});
 
 		this.refreshValidPlays();
-	
+
 		this.redraw();
 	};
 
@@ -730,7 +730,7 @@ let game = new (function(){
 		if (this.level <= 100) return 4;
 		return 5;
 	};
-	
+
 	this.randomizeBoard = function() {
 		this.board.getAllPlaces().forEach(p => {
 			p.setTile(new Tile(thiz.getRandomColor(thiz.getNumColorsForLevel()), Tile.prototype.TYPE_TILE));
@@ -749,21 +749,21 @@ let game = new (function(){
 	this.setColorAt = function(x,y,playedColor,cols,rows) {
 		x %= this.board.width; x += this.board.width; x %= this.board.width;
 		y %= this.board.height; y += this.board.height; y %= this.board.height;
-		
+
 		let playedOnPlace = this.board.getPlace(x,y);
 		let playedOnTile = playedOnPlace.getTile();
-	
+
 		playedOnTile.setColor(playedColor);
 		cols[x] = true;
 		rows[y] = true;
-	
+
 		playedOnPlace.flashStartTime = this.gameTime;
-		
+
 		this.redraw();
 	};
 
 	this.setBoardPlaceTileColor = function(x,y,tile,grabbedFromPlace) {
-		
+
 		//while we're here, return all other moving pointers back to their original locations
 		//cuz once in a blue moon one gets lost...
 		//NOTICE - this means have your Cursor/Pointer's setTile(undefined) before you call setBoardPlaceTileColor
@@ -789,7 +789,7 @@ let game = new (function(){
 			break;
 		case Tile.prototype.TYPE_FILL:
 			{
-				let points = []; 
+				let points = [];
 				points.push(new Point(x,y));
 				for (let i = 0; i < points.length; i++) {
 					let srcpt = points[i];
@@ -819,7 +819,7 @@ let game = new (function(){
 		}
 
 		//make this place flash
-		
+
 		let numFilledRows = 0;
 		for (let row in rows) {
 			let filledRow = true;
@@ -866,7 +866,7 @@ let game = new (function(){
 				}
 			}
 		}
-		
+
 		let filledAll = true;
 		{
 			let matchColor = undefined;
@@ -889,14 +889,14 @@ let game = new (function(){
 				});
 			}
 		}
-		
+
 		//special case for 'filled all'
 		if (filledAll) {
 			this.points += 2000;	//make it worthwhile for lower levels
 			this.points *= 1.5;	//add 50% to points
 			this.randomizeBoard();
 		} else {
-		
+
 			//calculate points
 			let thisPlay = 1;
 			thisPlay *= tile.getPoints(this.level);
@@ -914,30 +914,30 @@ let game = new (function(){
 			this.points += thisPlay;
 		}
 		this.points = parseInt(this.points);
-		
+
 		this.levelPlaysLeft--;
 		if (this.levelPlaysLeft <= 0) {
 			this.levelPlaysLeft = this.PLAYS_PER_LEVEL;
 			this.level++;
 		}
 		this.resetHandPlace(grabbedFromPlace);
-		
+
 		this.lastPlayX = x;
 		this.lastPlayY = y;
-		
+
 		//call this after 'resetHandPlace' since that changes this
 		this.refreshValidPlays();
-		
-		//if (numPlays == 0) 
+
+		//if (numPlays == 0)
 		//	end the game thread
 		//	popup the scoreboard (with our score on it, maybe?)
 		//	and start a new game
-		
+
 		this.redraw();
 	};
 
 	this.resetHandPlace = function(place) {
-			
+
 		let centers;
 		let div = 2;
 		let numColors = this.getNumColorsForLevel();
@@ -959,7 +959,7 @@ let game = new (function(){
 			probs[i] = 1.0 / (1.0 + Math.exp(-del));
 			sum += probs[i];
 		}
-		
+
 		//roulette average
 		let r = Math.random() * sum;
 		let numNeighbors = 0;
@@ -977,7 +977,7 @@ let game = new (function(){
 				type = Tile.prototype.TYPE_FILL;
 			}
 		}
-		
+
 		if (numNeighbors == 0) {
 			place.setTile(new Tile(this.getRandomColor(numColors), type));
 		} else {
@@ -993,7 +993,7 @@ let game = new (function(){
 			}
 			place.setTile(new Tile3x3(this.getRandomColor(numColors), type, neighbors));
 		}
-		
+
 		this.redraw();
 	};
 
@@ -1004,9 +1004,9 @@ let game = new (function(){
 	this.update = function() {
 		this.gameTime = Date.now();
 
-		//key update moved to key handlers	
-		//mouse update moved to mouse handlers		
-		
+		//key update moved to key handlers
+		//mouse update moved to mouse handlers
+
 		if (this.draggingBoard) {
 			let dx = this.draggingBoardX - this.draggingBoardDownX;
 			let dy = this.draggingBoardY - this.draggingBoardDownY;
@@ -1038,7 +1038,7 @@ let game = new (function(){
 		}
 	};
 
-	this.showPointerWithEvent = function(event) {	
+	this.showPointerWithEvent = function(event) {
 		//see if we're clicking on a tile
 		let x = event.pageX - game.canvas.offsetLeft;
 		let y = event.pageY - game.canvas.offsetTop;
@@ -1055,13 +1055,13 @@ let game = new (function(){
 				return;
 			}
 		}
-		
+
 		//see if we're clicked on a tile in the board...
 		//if so, set a magic flag that says 'dragging the board atm'
 		//then...
 		place = this.board.getPlaceAtPoint(x,y);
 		if (place !== undefined) {
-			if (!this.draggingBoard) {	//only if not dragging already 
+			if (!this.draggingBoard) {	//only if not dragging already
 				//better have a tile, it's on the board after all
 				//so just remember the x,y
 				//and deduce from there the dragged x,y distance or something ...
@@ -1072,7 +1072,7 @@ let game = new (function(){
 			this.draggingBoardX = x;
 			this.draggingBoardY = y;
 		}
-		
+
 		this.returnAllTiles();
 	};
 
@@ -1082,7 +1082,7 @@ let game = new (function(){
 		this.cursor.returnTile();
 		this.redraw();
 	};
-	
+
 	this.getPoints = function() { return this.points; };
 	this.getLevel = function() { return this.level; };
 	this.getPlaysLeft = function() { return this.levelPlaysLeft; };
@@ -1098,21 +1098,21 @@ let game = new (function(){
 
 		if (this.redrawCounter <= 0) return;
 		this.redrawCounter--;
-	
+
 		let titleBarHeight = 25;	//I can't make this go away...
 		let gamePadding = -25;//25;	//padding between fitted game size and canvas size
 		let canvasWidth = this.canvas.width;
 		let canvasHeight = this.canvas.height;// - titleBarHeight;	//top bar ... can i make this go away? not in android-3 targets ...
 
 		if (canvasWidth != this.lastCanvasWidth || canvasHeight != this.lastCanvasHeight) {
-	
+
 			//readjust board and hand with screen size
 			//especially important if the screen rotates
 			let eps = 0;//0.25;	//in units of tiles, what space between board and hand
 			let gameSizeX, gameSizeY;
 			let boardPosFracX, boardPosFracY;
 			let handPosFracX, handPosFracY;
-			
+
 			if (canvasWidth < canvasHeight) {	//hand beneath board
 
 				//flip the hand if needed
@@ -1125,10 +1125,10 @@ let game = new (function(){
 				handPosFracX = 1.5 / gameSizeX;
 				handPosFracY = 1. - (this.hand.height /*- .5*/) / gameSizeY;
 			} else {		//hand left of board
-			
+
 				//flip the hand if needed
 				if (this.hand.height < this.hand.width) this.hand.flip();
-				
+
 				gameSizeX = this.board.width + this.hand.width + eps + 2;
 				gameSizeY = Math.max(this.board.height, this.hand.height) + 2;
 				boardPosFracX = (this.hand.width + 1.5 + eps) / gameSizeX;
@@ -1139,14 +1139,14 @@ let game = new (function(){
 
 
 			//now find the appropriate scale such that gameSizeX, gameSizeY fits in width, height
-			
+
 			let tileScaleX = (canvasWidth - 2 * gamePadding) / gameSizeX;
 			let tileScaleY = (canvasHeight - 2 * gamePadding) / gameSizeY;
 			let tileScale = Math.min(tileScaleX, tileScaleY);
-			
+
 			let fittedSizeX = tileScale * gameSizeX;
 			let fittedSizeY = tileScale * gameSizeY;
-			
+
 			this.board.x = canvasWidth * .5 - fittedSizeX * .5 + fittedSizeX * boardPosFracX;
 			this.board.y = canvasHeight * .5 - fittedSizeY * .5 + fittedSizeY * boardPosFracY;
 			this.board.scale = tileScale;
@@ -1168,7 +1168,7 @@ let game = new (function(){
 				c.globalAlpha = 1.0 - deltaFadeTime / this.BACKGROUND_FADE_DURATION;
 				//fadetime = 0 means we just started, so last background overlay alpha is 1
 				//fadetime = duration means we're ending, so last background overlay alpha is 0
-				c.drawImage(this.lastBackground, 0, 0, canvasWidth, canvasHeight); 
+				c.drawImage(this.lastBackground, 0, 0, canvasWidth, canvasHeight);
 				c.globalAlpha = 1;
 				this.redraw();
 			}
@@ -1180,10 +1180,10 @@ let game = new (function(){
 			this.handPointer.draw(c);
 		}
 		this.cursor.draw(c);
-		
+
 		let padding = 10;
 		let yPadding = 16;
-		
+
 		//TODO update strinsg here
 
 		//let levelStr = "Level " + level + "." + (PLAYS_PER_LEVEL - levelPlaysLeft);
@@ -1217,7 +1217,7 @@ let game = new (function(){
 			};
 			let name = prompt("what's your name?");
 			if (name) {
-				console.log(`TODO 
+				console.log(`TODO
 				$.ajax({
 					url:'addscore.lua?name='+escape(name)
 						+'&score='+this.points
@@ -1309,7 +1309,7 @@ function onresize() {
 	let width = window.innerWidth;
 	let height = window.innerHeight;
 	let screenWidth = height * 540 / 960;
-	let screenHeight = height; 
+	let screenHeight = height;
 	game.canvas.width = parseInt(screenWidth);
 	game.canvas.height = parseInt(screenHeight);
 	game.canvas.style.left = (Math.max(0, (width-screenWidth)/2))+'px';
@@ -1391,16 +1391,16 @@ function onmousedownmove(event) {
 	game.draggingBoardY = y;
 	game.handPointer.setPos(x, y);
 	game.redraw();
-	
+
 	/* and if there's a touch cancel available:
 	draggingBoard = false;
 	returnAllTiles();
 	*/
 }
 
-function onmousedown(event) { 
+function onmousedown(event) {
 	mouseDown = true;
-	onmousedownmove(event); 
+	onmousedownmove(event);
 }
 function onmousemove(event) { onmousedownmove(event); }
 
@@ -1417,7 +1417,7 @@ function ready() {
 	});
 
 	//window.addEventListener('dragstart', function(e) { e.preventDefault(); });
-	window.addEventListener('touchstart', e => { 
+	window.addEventListener('touchstart', e => {
 		onmousedown(e.originalEvent.changedTouches[0]);
 	});
 	window.addEventListener('touchmove', e => {

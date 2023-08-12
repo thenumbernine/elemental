@@ -1,7 +1,28 @@
+html {
+	margin:0px;
+	padding:0px;
+	height:100%;
+}
+
 body {
 	color:white;
 	background-color:black;
 	user-select:none;
+	margin:0px;
+	padding:0px;
+}
+
+.page {
+	display:none;
+	margin:0px;
+	padding:0px;
+	height:100vh;
+}
+
+
+.header {
+	font-size:36pt;
+	padding:24px;
 }
 
 #splash-page {
@@ -21,17 +42,14 @@ body {
 	background-size:100% 100%;
 	background:black;
 	overflow:hidden;
+	font-size:24pt;
 }
 
 #game-canvas {
 	position:absolute;
 }
 
-[data-role="page"] {
-	display:none;
-}
-
-#splash-level {
+#splash-level-div {
 	font-size : 48pt;
 }
 
