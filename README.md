@@ -1,6 +1,6 @@
 # Elemental
 
-[Play Online](https://ihavenoparachute.com/elemental)
+[Play Online](https://thenumbernine.github.io/elemental)
 				
 ![Example](assets/help.png)
 
