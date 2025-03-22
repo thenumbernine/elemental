@@ -1,4 +1,5 @@
-import {DOM, getIDs, preload} from '/js/util.js';
+import {Img} from '/js/dom.js';
+import {getIDs, preload} from '/js/util.js';
 const ids = getIDs();
 
 let lastPage;
@@ -53,7 +54,7 @@ class Place extends TileHolder {
 		this.x = x;
 		this.y = y;
 		//was bitmap
-		this.img = DOM('img', {src:'res/drawable/tile_empty.png'});
+		this.img = Img({src:'res/drawable/tile_empty.png'});
 	}
 
 	getGrid() { return this.grid; }
@@ -382,9 +383,9 @@ class Hand extends Grid {
 class Color {
 	constructor(name) {
 		this.name = name;
-		this.tileImg = DOM('img', {src:this.getTileImgURL()});
-		this.crossImg = DOM('img', {src:this.getCrossImgURL()});
-		this.circleImg = DOM('img', {src:this.getCircleImgURL()});
+		this.tileImg = Img({src:this.getTileImgURL()});
+		this.crossImg = Img({src:this.getCrossImgURL()});
+		this.circleImg = Img({src:this.getCircleImgURL()});
 		//formerly this.bitmaps
 		//made to match up with Tile.prototype.TYPE_*
 		this.imgs = [this.tileImg, this.crossImg, this.circleImg];
@@ -409,7 +410,7 @@ class Cursor extends TileHolder {
 		this.game = game;
 		this.board = board;
 		this.hand = hand;
-		this.img = DOM('img', {src:'res/drawable/cursor.png'});
+		this.img = Img({src:'res/drawable/cursor.png'});
 
 		this.x = hand.width / 2;
 		this.y = 0;
@@ -639,7 +640,7 @@ let game = new (function(){
 
 	this.backgroundsForLevel = [];
 	for (let i = 1; i <= 100; i++) {
-		this.backgroundsForLevel.push(DOM('img', {src:'res/drawable/bg'+i+'.jpg'}));
+		this.backgroundsForLevel.push(Img({src:'res/drawable/bg'+i+'.jpg'}));
 	}
 
 	this.constructor = function() {
@@ -1239,18 +1240,18 @@ scores = new (function(){
 	this.refresh = function() {
 		const scoresGrid = ids['scores-grid'];
 		scoresGrid.innerHTML = '';
-		scoresGrid.appendChild(DOM('div', {text:'name', class:'ui-block-a'}));
-		scoresGrid.appendChild(DOM('div', {text:'level', class:'ui-block-b'}));
-		scoresGrid.appendChild(DOM('div', {text:'score', class:'ui-block-c'}));
+		scoresGrid.appendChild(Div({innerText:'name', classList:['ui-block-a']}));
+		scoresGrid.appendChild(Div({innerText:'level', classList:['ui-block-b']}));
+		scoresGrid.appendChild(Div({innerText:'score', classList:['ui-block-c']}));
 		console.log(`TODO
 		$.ajax({
 			url:'scores.json',
 			dataType:'json'
 		}).done(function(ds) {
 			ds.forEach(d => {
-				scoresGrid.appendChild(DOM('div', {text:d.name, class:'ui-block-a'}));
-				scoresGrid.appendChild(DOM('div', {text:d.level, class:'ui-block-b'}));
-				scoresGrid.appendChild(DOM('div', {text:d.score, class:'ui-block-c'}));
+				scoresGrid.appendChild(Div({innerText:d.name, classList:['ui-block-a']}));
+				scoresGrid.appendChild(Div({innerText:d.level, classList:['ui-block-b']}));
+				scoresGrid.appendChild(Div({innerText:d.score, classList:['ui-block-c']}));
 			});
 		});
 		`);
